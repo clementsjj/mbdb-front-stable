@@ -225,6 +225,7 @@ class MyMapComponent extends Component {
       isOpen: false,
       selectedMarker: null,
       addCode: false,
+      gestureHandling: 'greedy',
       status: ''
     };
 
@@ -267,11 +268,20 @@ class MyMapComponent extends Component {
   };
 
   handleMarkerClick(index) {
-    console.log('Selected Index: ', index);
-    this.setState({ isOpen: true, selectedMarker: index });
+    console.log('GestureHandling: ', this.state.gestureHandling);
+    this.setState({
+      isOpen: true,
+      selectedMarker: index,
+      gestureHandling: 'cooperative'
+    });
+    setTimeout(() => console.log(this.state.gestureHandling), 100);
   }
   handleCloseClick() {
-    this.setState({ isOpen: false, selectedMarker: null });
+    this.setState({
+      isOpen: false,
+      selectedMarker: null,
+      gestureHandling: 'greedy'
+    });
   }
   handleModalWindow(index) {
     this.setState({ isOpen: true, selectedMarker: index });
@@ -296,29 +306,47 @@ class MyMapComponent extends Component {
       });
   }
 
+  componentWillUnmount() {
+    document.removeEventListener('mouseDown', this.handleCloseClick);
+  }
+
+  // doSomething() {
+  //   console.log('HHHHHHHH');
+  // }
+
   render() {
     const markersII = this.state.bathrooms || [];
     return (
       <GoogleMap
         defaultZoom={14}
         defaultCenter={{ lat: 40.7308, lng: -73.9973 }}
-        defaultOptions={{ styles: darkmapstyle, disableDefaultUI: true }}
+        defaultOptions={{
+          styles: darkmapstyle,
+          disableDefaultUI: true,
+          gestureHandling: this.state.gestureHandling
+        }}
       >
         {markersII.map((bathroom, i) => (
           <Marker
             position={{ lat: bathroom.lat, lng: bathroom.lng }}
             clickable={true}
+            //icon={bathroom.isPublic ? sitGreen32 : sitBlue322}
             icon={bathroom.isPublic ? sitGreen32 : sitBlue322}
             key={i}
             defaultOptions={{ optimized: false }}
             onMouseDown={() => {
               this.handleMarkerClick(i);
+              // this.doSomething();
+              //
+              //Pan or zoom map here
+              //
             }}
           >
             {this.state.selectedMarker == i && (
               <Modal
-                closeOnDocumentClick
-                defaultOpen
+                //closeOnDocumentClick
+                //defaultOpen
+                open={true}
                 onClose={this.handleCloseClick}
                 size="mini"
               >
@@ -338,7 +366,7 @@ class MyMapComponent extends Component {
                       <div>
                         <span style={{ margin: 0 }}>Other Codes:&nbsp;</span>
                         {bathroom.otherCodes.map((code, i) => (
-                          <span>
+                          <span key={i}>
                             {code}
                             {i !== bathroom.otherCodes.length - 1 ? ' | ' : ''}
                           </span>
