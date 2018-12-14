@@ -67,7 +67,7 @@ class FormContainer extends Component {
     console.log(`Handle Place Search... with query of: ${query}`);
     axios
       .get(
-        `https://secure-wave-30156.herokuapp.com/bathrooms/placesearch?query=${query}`
+        `https://mbdb-node.herokuapp.com/bathrooms/placesearch?query=${query}`
       )
       .then(place => {
         console.log('PlaceSearch returned = ', place.data);
@@ -106,7 +106,7 @@ class FormContainer extends Component {
 
   handleFormSubmit(e) {
     e.preventDefault();
-    let address = `https://secure-wave-30156.herokuapp.com/bathrooms/addbathroom`;
+    let address = `https://mbdb-node.herokuapp.com/bathrooms/addbathroom`;
     let bathroomToAdd = this.state.newBathroom;
 
     axios

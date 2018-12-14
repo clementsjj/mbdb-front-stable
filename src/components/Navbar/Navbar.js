@@ -26,13 +26,13 @@ export default class Navbar extends Component {
           style={{
             padding: '.25vh',
             marginBottom: 0,
-            height: '2rem',
-            backgroundColor: 'black',
+            height: '2vh',
+            backgroundColor: '#1b1c1d',
             color: 'green',
             textAlign: 'center'
           }}
         >
-          We are in Beta!
+          Beta Version!
         </Segment>
         <Menu
           className={'nav'}

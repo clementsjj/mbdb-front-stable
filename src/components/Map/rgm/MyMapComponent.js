@@ -243,7 +243,7 @@ class MyMapComponent extends Component {
   //   }
 
   addCodeSubmit = id => {
-    let address = `http://localhost:3000/bathrooms/addadditionalcode`;
+    let address = `https://mbdb-node.herokuapp.com/bathrooms/addadditionalcode`;
     let code = this.state.codeToAdd;
     //console.log('Code To Send: ', code);
 
@@ -310,7 +310,8 @@ class MyMapComponent extends Component {
             clickable={true}
             icon={bathroom.isPublic ? sitGreen32 : sitBlue322}
             key={i}
-            onClick={() => {
+            defaultOptions={{ optimized: false }}
+            onMouseDown={() => {
               this.handleMarkerClick(i);
             }}
           >
