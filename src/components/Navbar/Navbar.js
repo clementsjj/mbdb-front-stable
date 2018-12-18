@@ -12,10 +12,17 @@ import {
 import FormContainer from './FormContainer';
 import About from './About';
 import '../../App.css';
+import { getCurrentLocation } from '../../utils/getCurrentLocation';
 
 export default class Navbar extends Component {
   state = {};
   handleItemClick = (e, { name }) => this.setState({ activeItem: name });
+
+  getLocation = () => {
+    getCurrentLocation().then(location => {
+      console.log(location);
+    });
+  };
 
   render() {
     const { activeItem } = this.state;
@@ -45,7 +52,11 @@ export default class Navbar extends Component {
           }}
         >
           <Menu.Item header style={{ color: 'green', padding: '5 20' }}>
-            <Header as="h1" style={{ color: 'green' }}>
+            <Header
+              as="h1"
+              style={{ color: 'green' }}
+              onClick={this.getLocation}
+            >
               MBDB
             </Header>
           </Menu.Item>

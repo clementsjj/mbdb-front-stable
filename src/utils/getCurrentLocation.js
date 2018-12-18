@@ -11,7 +11,10 @@ export const getCurrentLocation = () => {
         resolve(position.coords);
       },
       () => {
-        reject(new Error('Permission denied'));
+        let defaultLocation = {};
+        defaultLocation.lat = 40.7308;
+        defaultLocation.lng = -73.9973;
+        reject(defaultLocation);
       }
     );
   });

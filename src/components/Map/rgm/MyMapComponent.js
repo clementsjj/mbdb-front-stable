@@ -16,6 +16,7 @@ import {
   sitBlue322
 } from '../../../assets/icons';
 import { getBathrooms } from './getBathrooms';
+import { getCurrentLocation } from '../../../utils/getCurrentLocation';
 import axios from 'axios';
 
 //let markers = [];
@@ -227,6 +228,7 @@ class MyMapComponent extends Component {
       addCode: false,
       gestureHandling: 'greedy',
       status: ''
+      //currentLocation: {}
     };
 
     //this.createMarkers = this.createMarkers.bind(this);
@@ -274,7 +276,6 @@ class MyMapComponent extends Component {
       selectedMarker: index,
       gestureHandling: 'cooperative'
     });
-    setTimeout(() => console.log(this.state.gestureHandling), 100);
   }
   handleCloseClick() {
     this.setState({
@@ -293,9 +294,22 @@ class MyMapComponent extends Component {
   }
 
   componentDidMount() {
+    getCurrentLocation().then(location => {
+      console.log('Lat: ', location.latitude, 'Lng: ', location.longitude);
+      let locationState = {};
+      locationState.lat = location.latitude;
+      locationState.lng = location.longitude;
+      this.setState(
+        {
+          currentLocation: { lat: locationState.lat, lng: locationState.lng }
+        },
+        () => console.log(this.state.currentLocation)
+      );
+    });
+
     getBathrooms()
       .then(data => {
-        console.log('ComponentDidMount-Data&State: ', data);
+        console.log('Bathrooms to Map: ', data);
         this.setState({
           bathrooms: data.bathrooms
         });
@@ -316,16 +330,35 @@ class MyMapComponent extends Component {
 
   render() {
     const markersII = this.state.bathrooms || [];
+    // const center = getCurrentLocation().then(location=>{
+    //   let lat=location.latirude
+    //   let lng=location.longitude
+    //   return {lat:lat, lng:lng}
+    //   }
+    //   || {
+    //    lat: 40.7308,
+    //    lng: -73.9973
+    // };
     return (
       <GoogleMap
-        defaultZoom={14}
+        defaultZoom={12}
         defaultCenter={{ lat: 40.7308, lng: -73.9973 }}
+        zoom={14}
+        center={
+          this.state.currentLocation
+            ? this.state.currentLocation
+            : { lat: 40.7308, lng: -73.9973 }
+        }
         defaultOptions={{
           styles: darkmapstyle,
           disableDefaultUI: true,
           gestureHandling: this.state.gestureHandling
         }}
       >
+        <Marker
+          position={this.state.currentLocation && this.state.currentLocation}
+          zIndex={100}
+        />
         {markersII.map((bathroom, i) => (
           <Marker
             position={{ lat: bathroom.lat, lng: bathroom.lng }}
