@@ -60,7 +60,7 @@ class FormContainer extends Component {
           <Divider />
           <br />
           <br />
-          <a href="https://mbdb-cms.netflify.com" taret="_blank">
+          <a href="https://mbdb-cms.netlify.com" taret="_blank">
             MBDB CMS
           </a>
           <br />

@@ -268,7 +268,7 @@ class MyMapComponent extends Component {
   };
 
   handleMarkerClick(index) {
-    console.log('GestureHandling: ', this.state.gestureHandling);
+    //console.log('GestureHandling: ', this.state.gestureHandling);
     this.setState({
       isOpen: true,
       selectedMarker: index,
@@ -295,7 +295,7 @@ class MyMapComponent extends Component {
   componentDidMount() {
     getBathrooms()
       .then(data => {
-        console.log('Component Mount-Received Data and setting State: ', data);
+        console.log('ComponentDidMount-Data&State: ', data);
         this.setState({
           bathrooms: data.bathrooms
         });
